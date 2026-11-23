@@ -3,7 +3,7 @@
 Use one `animation` and one `effect` per player. They work together:
 
 - `animation` controls the text's color or glow.
-- `effect` controls the text's movement, reveal, or outline.
+- `effect` controls the text's movement, reveal, or visibility.
 
 ```json
 {
@@ -27,9 +27,12 @@ Use one `animation` and one `effect` per player. They work together:
 | `gradient wave` | A moving wave between `color` and `color2` |
 | `shimmer` | A bright highlight sweeps across the text |
 | `holographic` | Pastel rainbow colors move across the text |
-| `glow` | A subtle halo around the text |
+| `fire` | Red, orange, and yellow flicker across the text |
+| `ice` | A cool blue-and-white shimmer |
+| `gold rush` | A bright highlight sweeps across gold text |
+| `neon glow` | White text with a colored outline and soft halo |
 
-`holographic` uses its own rainbow colors rather than `color`.
+`holographic`, `fire`, `ice`, and `gold rush` use their own colors rather than `color`.
 
 `gradient wave` needs a second color:
 
@@ -53,25 +56,30 @@ Use one `animation` and one `effect` per player. They work together:
 | `text wave` | Letters move up and down in a continuous wave |
 | `shake` | Letters wobble independently |
 | `ripple` | A bounce travels across the text, then pauses |
-| `typewriter` | Letters appear one by one, pause, then repeat |
-| `neon glow` | White text with a colored outline and soft halo |
+| `typewriter` | Letters appear one by one, pause, then erase at the same speed before repeating |
+| `bounce` | The whole text gently hops |
+| `slide` | Letters slide up into place one by one, pause, then restart |
+| `jitter` | Letters move in quick, small random-looking steps |
+| `fade` | The whole text fades in and out |
+| `scramble` | Random-looking characters settle into the real text, then repeat |
+| `blink` | The whole text periodically disappears and reappears |
 
-For `neon glow`, `color` sets the outline color. The selected animation
-animates the outline while the text stays white. For example:
+For the `neon glow` animation, `color` sets the outline color. It can be
+combined with any text effect. For example:
 
 ```json
 {
   "_Maksym": {
     "rank": "[BLEH]",
     "color": "red",
-    "animation": "none",
-    "effect": "neon glow"
+    "animation": "neon glow",
+    "effect": "text wave"
   }
 }
 ```
 
-To make the outline change through holographic colors, use
-`"animation": "holographic"` instead of `"none"`.
+Only one animation can be selected, so `holographic` and `neon glow` cannot
+be used together.
 
 ## Colors
 
@@ -81,7 +89,10 @@ Use a hex color such as `"#FF5555"`, or one of:
 `blue`, `dark_blue`, `purple`, `pink`, `white`, `gray`, `dark_gray`.
 
 You can omit `animation` or `effect` for `none`. The old animation value
-`wave` is not supported; use `dark wave` or `bright wave`.
+`wave` is not supported; use `dark wave` or `bright wave`. The old
+`"animation": "glow"` and `"effect": "neon glow"` values are not supported.
+Update every affected entry in GitHub's `ranks.json` to use
+`"animation": "neon glow"`; one unsupported value rejects the entire file.
 
 These settings appear in the custom tab list. The overlay loads ranks from
 the GitHub `ranks.json`, not the separate local file in Documents. Older
