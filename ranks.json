@@ -4,6 +4,6 @@
 "Dewier": {"rank": "<King>", "color": "gold", "animation": "bright wave", "effect": "text wave"},
 "oVoidless": {"rank": "[Void]", "color": "blue", "animation": "pulse", "effect": "typewriter"},
 "the_graker": {"rank": "{Backflip}", "color": "#00FF00", "animation": "shimmer", "effect": "ripple"},
-"AdamZolks": {"rank": "200ms", "color": "purple", "animation": "glow", "effect": "neon glow"},
+"AdamZolks": {"rank":"200ms","color":"purple","animation":"neon glow","effect":"none"},
 "CoolCqt": {"rank": "Cat", "color": "#FFA500", "animation": "holographic", "effect": "shake"}
 }
