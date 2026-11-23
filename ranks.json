@@ -1,7 +1,7 @@
 {
   "_Maksym": {"rank": "[BLEH]", "color": "red", "animation": "dark wave", "effect": "text wave"},
   "BraindeathV1": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "none"},
-  "Dewier": {"rank": "<King>", "color": "gold", "animation": "gold rush", "effect": "bounce"},
+  "Dewier": {"rank": "<King>", "color": "gold", "animation": "gold rush", "effect": "blink"},
   "oVoidless": {"rank": "[Void]", "color": "blue", "animation": "pulse", "effect": "typewriter"},
   "the_graker": {"rank": "~Backflip~", "color": "#00FF00", "animation": "shimmer", "effect": "ripple"},
   "AdamZolks": {"rank": "200ms", "color": "purple", "animation": "neon glow", "effect": "slide"},
@@ -9,5 +9,5 @@
   "Kryptoke": {"rank": "Toke", "color": "blue", "animation": "ice", "effect": "jitter"},
   "Ereen": {"rank": "🔥", "color": "red", "animation": "fire", "effect": "fade"},
   "oBots": {"rank": ":Bot:", "color": "gray", "color2": "blue", "animation": "gradient wave", "effect": "scramble"},
-  "frogoh": {"rank": "-ribbit-", "color": "green", "animation": "none", "effect": "blink"}
+  "frogoh": {"rank": "-ribbit-", "color": "green", "animation": "none", "effect": "bounce"}
 }
