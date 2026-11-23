@@ -7,7 +7,7 @@
   "AdamZolks": {"rank": "200ms", "color": "purple", "animation": "neon glow", "effect": "slide"},
   "CoolCqt": {"rank": "Cat", "color": "#FFA500", "animation": "holographic", "effect": "shake"},
   "Kryptoke": {"rank": "Toke", "color": "blue", "animation": "ice", "effect": "jitter"},
-  "Ereen": {"rank": "🔥", "color": "red", "animation": "fire", "effect": "fade"},
+  "Ereen": {"rank": "^Fire^", "color": "red", "animation": "fire", "effect": "fade"},
   "oBots": {"rank": ":Bot:", "color": "gray", "color2": "blue", "animation": "gradient wave", "effect": "scramble"},
   "frogoh": {"rank": "-ribbit-", "color": "green", "animation": "none", "effect": "bounce"}
 }
