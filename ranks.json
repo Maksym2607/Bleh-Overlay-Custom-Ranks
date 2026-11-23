@@ -1,7 +1,7 @@
 {
   "_Maksym": {"rank": "[BLEH]", "color": "red", "animation": "dark wave", "effect": "text wave"},
-  "BraindeathV1": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "none"},
-  "Dewier": {"rank": "<King>", "color": "gold", "animation": "gold rush", "effect": "blink"},
+  "BraindeathV1": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "blink"},
+  "Dewier": {"rank": "<King>", "color": "gold", "animation": "gold rush", "effect": "none"},
   "oVoidless": {"rank": "[Void]", "color": "blue", "animation": "pulse", "effect": "typewriter"},
   "the_graker": {"rank": "~Backflip~", "color": "#00FF00", "animation": "shimmer", "effect": "ripple"},
   "AdamZolks": {"rank": "200ms", "color": "purple", "animation": "neon glow", "effect": "slide"},
