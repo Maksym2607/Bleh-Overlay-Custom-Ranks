@@ -1,4 +1,9 @@
 {
 "_Maksym": {"rank": "[BLEH]", "color": "red", "animation": "dark wave", "effect": "text wave"},
-"BraindeathV1": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "none"}
+"BraindeathV1": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "none"},
+"Dewier": {"rank": "<King>", "color": "gold", "animation": "bright wave", "effect": "text wave"},
+"oVoidless": {"rank": "[Void]", "color": "blue", "animation": "pulse", "effect": "typewriter"},
+"the_graker": {"rank": "{Backflip}", "color": "lime", "animation": "shimmer", "effect": "ripple"},
+"AdamZolks": {"rank": "200ms", "color": "purple", "animation": "glow", "effect": "neon glow"},
+"CoolCqt": {"rank": "Cat", "color": "FFA500", "animation": "holographic", "effect": "shake"}
 }
