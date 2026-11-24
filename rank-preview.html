@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Bleh Custom Rank Preview</title>
+  <style>
+    @font-face {
+      font-family: "Minecraft";
+      src: url("./fonts/MinecraftRegular-Bmg3.otf") format("opentype");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: dark;
+      font-family: Inter, "Segoe UI", sans-serif;
+      background: #0c1018;
+      color: #e8edf5;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      --panel: #151c28;
+      --panel-raised: #1b2533;
+      --border: #2b3849;
+      --muted: #9aa9bc;
+      --accent: #73a7ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        radial-gradient(ellipse at 12% 0%, #183052 0, transparent 38rem),
+        #0c1018;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 64px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 10px; font-size: clamp(30px, 5vw, 46px); }
+    h2 { margin-bottom: 8px; font-size: 20px; }
+    h3 { margin-bottom: 6px; font-size: 15px; }
+    p { color: var(--muted); line-height: 1.55; }
+    .intro { max-width: 760px; margin-bottom: 28px; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--panel) 94%, transparent);
+      padding: 20px;
+      box-shadow: 0 16px 40px #0003;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field { display: grid; gap: 7px; }
+    .field.wide { grid-column: 1 / -1; }
+    label { color: #dce5f1; font-size: 13px; font-weight: 650; }
+    .hint { margin: 0; font-size: 12px; }
+
+    input, select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0f151f;
+      color: #f3f6fb;
+      padding: 9px 10px;
+      font: inherit;
+    }
+
+    input[type="color"] {
+      height: 40px;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    input:focus, select:focus, button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .preview {
+      min-height: 190px;
+      display: grid;
+      align-content: center;
+      gap: 15px;
+      margin: 18px 0;
+      border: 1px solid #303b49;
+      border-radius: 10px;
+      padding: 20px;
+      background:
+        linear-gradient(90deg, transparent 49.8%, #ffffff08 50%, transparent 50.2%),
+        repeating-linear-gradient(0deg, #ffffff08 0 1px, transparent 1px 18px),
+        #111821;
+    }
+
+    .preview-caption {
+      color: #8292a8;
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: 0.14em;
+    }
+
+    .preview-line {
+      min-height: 36px;
+      overflow: visible;
+      color: #f3f6fb;
+      font: 400 20px/1.8 "Minecraft", monospace;
+      white-space: pre;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .glyph {
+      display: inline-block;
+      min-width: 0.28em;
+      white-space: pre;
+      will-change: transform, opacity, color;
+    }
+
+    .preview-note { margin: 0; font-size: 12px; }
+
+    .json-box {
+      min-height: 188px;
+      max-height: 320px;
+      overflow: auto;
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      background: #0b1017;
+      color: #c8e1ff;
+      font: 13px/1.55 "Consolas", "Courier New", monospace;
+      white-space: pre;
+      tab-size: 2;
+    }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    button {
+      min-height: 38px;
+      border: 1px solid #40516a;
+      border-radius: 8px;
+      background: #202c3c;
+      color: #f3f6fb;
+      padding: 8px 13px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    button:hover { background: #2a3a50; }
+    button.primary { border-color: #6596ed; background: #2b5eaa; }
+    button.primary:hover { background: #3670c2; }
+
+    .status { min-height: 18px; margin: 9px 0 0; font-size: 12px; }
+    .status.error { color: #ff9a9a; }
+    .status.success { color: #8be0a5; }
+
+    .catalog { display: grid; gap: 18px; margin-top: 22px; }
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(205px, 1fr));
+      gap: 10px;
+    }
+    .option-card {
+      display: grid;
+      justify-items: start;
+      gap: 5px;
+      min-height: 88px;
+      text-align: left;
+      padding: 12px;
+    }
+    .option-card[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: #213552;
+    }
+    .option-card strong { font-size: 13px; }
+    .option-card span {
+      color: #b1bfd0;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .caveat {
+      margin-top: 18px;
+      border-left: 3px solid #d5a74d;
+      padding: 2px 0 2px 12px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      main { padding-top: 30px; }
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .glyph { will-change: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <h1>Custom rank preview</h1>
+      <p>Try every Bleh rank animation and text effect, combine them, then copy or download a sample <code>ranks.json</code>. Open this file locally, or publish it with GitHub Pages to share the preview.</p>
+    </header>
+
+    <div class="layout">
+      <section class="panel" aria-labelledby="controls-title">
+        <h2 id="controls-title">Your rank</h2>
+        <div class="controls">
+          <div class="field">
+            <label for="rank-label">Rank label</label>
+            <input id="rank-label" value="[VIP]" maxlength="32" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="player-name">Preview name</label>
+            <input id="player-name" value="ExamplePlayer" maxlength="16" autocomplete="off">
+          </div>
+          <div class="field wide">
+            <label for="player-key">Ranks JSON key</label>
+            <input id="player-key" value="ExamplePlayer" maxlength="64" autocomplete="off">
+            <p class="hint">Use the player’s Minecraft username, UUID, or a labeled UUID key. Replace this example before using the JSON in-game.</p>
+          </div>
+          <div class="field">
+            <label for="rank-color">Color</label>
+            <input id="rank-color" type="color" value="#ff5555">
+          </div>
+          <div class="field">
+            <label for="rank-color2">Second color</label>
+            <input id="rank-color2" type="color" value="#5555ff">
+          </div>
+          <div class="field">
+            <label for="animation">Animation</label>
+            <select id="animation"></select>
+          </div>
+          <div class="field">
+            <label for="effect">Text effect</label>
+            <select id="effect"></select>
+          </div>
+          <div class="field wide">
+            <p id="style-description" class="hint" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="preview-title">
+        <h2 id="preview-title">Live preview</h2>
+        <div class="preview">
+          <div class="preview-caption">TAB LIST · NAME COLUMN</div>
+          <div id="preview-line" class="preview-line" aria-label="Rank preview"></div>
+          <p class="preview-note">Uses Minecraft Regular by JDGraphics, listed as public domain on FontSpace. In-game font metrics can differ.</p>
+        </div>
+        <h3>Sample ranks.json</h3>
+        <pre id="json-output" class="json-box" aria-live="polite"></pre>
+        <div class="actions">
+          <button id="copy-json" class="primary" type="button">Copy JSON</button>
+          <button id="download-json" type="button">Download ranks.json</button>
+        </div>
+        <p id="action-status" class="status" role="status"></p>
+      </section>
+    </div>
+
+    <section class="catalog" aria-label="Available rank styles">
+      <section class="panel">
+        <h2>Animations</h2>
+        <p>Choose one animation. Click any option to preview it with your selected text effect.</p>
+        <div id="animation-options" class="option-grid"></div>
+      </section>
+      <section class="panel">
+        <h2>Text effects</h2>
+        <p>Choose one effect. It can be combined with any animation.</p>
+        <div id="effect-options" class="option-grid"></div>
+      </section>
+    </section>
+
+    <p class="caveat">This browser preview approximates Minecraft’s tab text. Font metrics and rendering can differ in-game. Upload the downloaded JSON only if you intend to update the shared ranks list; test with your own username or UUID.</p>
+  </main>
+
+  <script>
+    "use strict";
+
+    const animations = [
+      { value: "none", description: "Solid text in your chosen color." },
+      { value: "dark wave", description: "A traveling wave shifts between your color and a darker shade." },
+      { value: "bright wave", description: "A traveling wave shifts between your color and a lighter shade." },
+      { value: "pulse", description: "The whole name brightens and dims together." },
+      { value: "gradient wave", description: "A moving wave blends your first and second colors." },
+      { value: "shimmer", description: "A bright highlight sweeps across the text." },
+      { value: "holographic", description: "Pastel rainbow colors move across the text." },
+      { value: "fire", description: "Red, orange, and yellow flicker across the text." },
+      { value: "ice", description: "A cool blue-and-white shimmer." },
+      { value: "gold rush", description: "A gold highlight sweeps across the text." },
+      { value: "neon glow", description: "White text gets an outline and soft halo in your chosen color." }
+    ];
+
+    const effects = [
+      { value: "none", description: "Stationary text." },
+      { value: "text wave", description: "Letters move up and down in a continuous wave." },
+      { value: "shake", description: "Letters wobble independently." },
+      { value: "ripple", description: "A bounce travels across the text, then pauses." },
+      { value: "typewriter", description: "Letters appear one by one, pause, then erase." },
+      { value: "bounce", description: "The whole text gently hops." },
+      { value: "slide", description: "Letters slide into place, pause, then reverse out." },
+      { value: "jitter", description: "Letters move in quick, small random-looking steps." },
+      { value: "fade", description: "The whole text fades in and out." },
+      { value: "scramble", description: "Random-looking characters settle into the real text." },
+      { value: "blink", description: "The whole text periodically disappears and reappears." }
+    ];
+
+    const byId = id => document.getElementById(id);
+    const controls = {
+      label: byId("rank-label"),
+      name: byId("player-name"),
+      key: byId("player-key"),
+      color: byId("rank-color"),
+      color2: byId("rank-color2"),
+      animation: byId("animation"),
+      effect: byId("effect")
+    };
+    const previewLine = byId("preview-line");
+    const jsonOutput = byId("json-output");
+    const actionStatus = byId("action-status");
+    let glyphs = [];
+    let startedAt = performance.now();
+
+    function populateSelect(select, options) {
+      for (const option of options) {
+        const element = document.createElement("option");
+        element.value = option.value;
+        element.textContent = option.value;
+        select.append(element);
+      }
+    }
+
+    function populateCards(container, options, select) {
+      for (const option of options) {
+        const button = document.createElement("button");
+        button.className = "option-card";
+        button.type = "button";
+        button.setAttribute("aria-pressed", "false");
+        const name = document.createElement("strong");
+        name.textContent = option.value;
+        const description = document.createElement("span");
+        description.textContent = option.description;
+        button.append(name, description);
+        button.addEventListener("click", () => {
+          select.value = option.value;
+          update();
+        });
+        container.append(button);
+      }
+    }
+
+    populateSelect(controls.animation, animations);
+    populateSelect(controls.effect, effects);
+    populateCards(byId("animation-options"), animations, controls.animation);
+    populateCards(byId("effect-options"), effects, controls.effect);
+
+    function rgb(hex) {
+      return [
+        Number.parseInt(hex.slice(1, 3), 16),
+        Number.parseInt(hex.slice(3, 5), 16),
+        Number.parseInt(hex.slice(5, 7), 16)
+      ];
+    }
+
+    function cssColor(color) {
+      return `rgb(${color.map(channel => Math.round(channel)).join(", ")})`;
+    }
+
+    function mixColor(from, to, amount) {
+      return from.map((channel, i) => channel + (to[i] - channel) * amount);
+    }
+
+    function waveColor(color, animation, position) {
+      const factor = Math.max(0, Math.min(1, position));
+      if (animation === "dark wave")
+        return color.map(channel => channel * (0.55 + 0.45 * factor));
+      return color.map(channel => channel + (255 - channel) * 0.6 * factor);
+    }
+
+    function animatedColor(animation, time, index, length, base, second) {
+      if (animation === "neon glow") return [255, 255, 255];
+      if (animation === "fire") {
+        const phase = (time % 6000) / 1000 * Math.PI * 2;
+        const heat = 0.5 + 0.25 * Math.sin(phase * 2 + index * 1.3) +
+          0.25 * Math.sin(phase * 3.5 - index * 2.1);
+        return [255, 40 + heat * 190, 10 + heat * 55];
+      }
+      if (animation === "ice") {
+        const phase = (time % 4000) / 4000 * Math.PI * 2;
+        const shimmer = 0.5 + 0.5 * Math.sin(phase - index * 0.55);
+        return [90 + shimmer * 165, 170 + shimmer * 85, 255];
+      }
+      if (animation === "holographic") {
+        const hue = ((time % 6000) / 6000 + (index % 40) * 0.075) % 1;
+        const sector = hue * 6;
+        const section = Math.floor(sector);
+        const fraction = sector - section;
+        const low = 0.45;
+        const rising = low + (1 - low) * fraction;
+        const falling = 1 - (1 - low) * fraction;
+        let r = 1, g = low, b = low;
+        if (section === 0) g = rising;
+        else if (section === 1) { r = falling; g = 1; }
+        else if (section === 2) { r = low; g = 1; b = rising; }
+        else if (section === 3) { r = low; g = falling; b = 1; }
+        else if (section === 4) { r = rising; b = 1; }
+        else b = falling;
+        return [r * 255, g * 255, b * 255];
+      }
+
+      const cycle = (time % 4000) / 4000;
+      const phase = cycle * Math.PI * 2;
+      const position = 0.5 + 0.5 * Math.sin(
+        phase - (animation === "pulse" ? 0 : index * 0.55)
+      );
+      if (animation === "pulse") return waveColor(base, "dark wave", position);
+      if (animation === "dark wave" || animation === "bright wave")
+        return waveColor(base, animation, position);
+
+      let from = base;
+      let to = second;
+      let blend = position;
+      if (animation === "shimmer" || animation === "gold rush") {
+        const center = -2 + cycle * (length + 4);
+        blend = Math.max(0, 1 - Math.abs(index - center) / 2);
+        blend = blend * blend * (3 - 2 * blend) * 0.75;
+        if (animation === "gold rush") {
+          from = [255, 170, 0];
+          to = [255, 243, 160];
+        } else {
+          to = [255, 255, 255];
+        }
+      } else if (animation !== "gradient wave") {
+        return base;
+      }
+      return mixColor(from, to, blend);
+    }
+
+    function randomValue(bucket, index) {
+      let value = (Math.imul(bucket + 1, 0x9e3779b1) ^
+        Math.imul(index + 1, 0x85ebca6b)) >>> 0;
+      value ^= value >>> 16;
+      value = Math.imul(value, 0x7feb352d) >>> 0;
+      value ^= value >>> 15;
+      return (value >>> 0) / 0x100000000;
+    }
+
+    function glyphEffect(effect, time, index, length) {
+      const result = { x: 0, y: 0, opacity: 1, visible: true, scramble: false };
+      if (effect === "text wave") {
+        result.y = Math.sin((time % 4000) / 4000 * Math.PI * 2 - index * 0.55);
+      } else if (effect === "shake") {
+        const phase = (time % 900) / 900 * Math.PI * 2;
+        result.x = 0.65 * Math.sin(phase * 3 + index * 1.7);
+        result.y = 0.65 * Math.cos(phase * 4 + index * 2.3);
+      } else if (effect === "ripple") {
+        const elapsed = time % 4000;
+        if (elapsed < 3000) {
+          const center = -2 + elapsed / 3000 * (length + 3);
+          const strength = Math.max(0, 1 - Math.abs(index - center) / 2);
+          result.y = -2 * strength;
+        }
+      } else if (effect === "typewriter") {
+        const characterTime = 90;
+        const typingTime = length * characterTime;
+        const elapsed = time % (typingTime * 2 + 1500);
+        const revealed = elapsed < typingTime + 1500
+          ? Math.min(length, Math.floor(elapsed / characterTime))
+          : length - Math.floor((elapsed - typingTime - 1500) / characterTime);
+        result.visible = index < revealed;
+      } else if (effect === "bounce") {
+        const phase = (time % 1200) / 1200 * Math.PI * 2;
+        result.y = -(1 - Math.cos(phase));
+      } else if (effect === "slide") {
+        const stagger = 90, duration = 240, hold = 1500;
+        const entryTime = (length - 1) * stagger + duration;
+        const cycle = entryTime * 2 + hold;
+        const elapsed = time % cycle;
+        const position = elapsed < entryTime + hold ? elapsed : cycle - elapsed;
+        const start = index * stagger;
+        if (position < start) {
+          result.visible = false;
+        } else {
+          const progress = Math.min(1, (position - start) / duration);
+          result.y = 2 * (1 - progress);
+        }
+      } else if (effect === "jitter") {
+        const bucket = Math.floor(time / 65);
+        result.x = (randomValue(bucket, index) * 2 - 1) * 0.75;
+        result.y = (randomValue(bucket + 17, index) * 2 - 1) * 0.75;
+      } else if (effect === "fade") {
+        const phase = (time % 4000) / 4000 * Math.PI * 2;
+        result.opacity = Math.max(0, Math.min(1, 0.5 - 0.5 * Math.cos(phase)));
+        result.visible = result.opacity > 0;
+      } else if (effect === "scramble") {
+        const duration = 800, stagger = 60, hold = 2000;
+        const cycle = duration + Math.max(0, length - 1) * stagger + hold;
+        const elapsed = time % cycle;
+        result.scramble = elapsed < duration + index * stagger;
+      } else if (effect === "blink") {
+        result.visible = time % 1800 < 1200;
+      }
+      return result;
+    }
+
+    function renderGlyphs() {
+      const text = `${controls.label.value} ${controls.name.value}`;
+      const fragment = document.createDocumentFragment();
+      glyphs = Array.from(text, (character, index) => {
+        const glyph = document.createElement("span");
+        glyph.className = "glyph";
+        glyph.textContent = character;
+        glyph.dataset.original = character;
+        glyph.setAttribute("aria-hidden", "true");
+        glyph.dataset.index = String(index);
+        fragment.append(glyph);
+        return glyph;
+      });
+      previewLine.replaceChildren(fragment);
+      previewLine.setAttribute("aria-label", text);
+      startedAt = performance.now();
+    }
+
+    function updateStyleDescription() {
+      const animation = animations.find(item => item.value === controls.animation.value);
+      const effect = effects.find(item => item.value === controls.effect.value);
+      byId("style-description").textContent =
+        `${animation.description} ${effect.description}`;
+      controls.color2.disabled = controls.animation.value !== "gradient wave";
+      for (const [containerId, value] of [
+        ["animation-options", controls.animation.value],
+        ["effect-options", controls.effect.value]
+      ]) {
+        for (const button of byId(containerId).querySelectorAll("button"))
+          button.setAttribute("aria-pressed", String(button.firstElementChild.textContent === value));
+      }
+    }
+
+    function makeJson() {
+      const key = controls.key.value.trim();
+      if (!key) return null;
+      const rank = {
+        rank: controls.label.value,
+        color: controls.color.value.toUpperCase(),
+        animation: controls.animation.value,
+        effect: controls.effect.value
+      };
+      if (controls.animation.value === "gradient wave")
+        rank.color2 = controls.color2.value.toUpperCase();
+      const ranks = Object.create(null);
+      ranks[key] = rank;
+      return JSON.stringify(ranks, null, 2);
+    }
+
+    function update() {
+      if (!glyphs.length ||
+          glyphs.map(glyph => glyph.textContent).join("") !==
+            `${controls.label.value} ${controls.name.value}`)
+        renderGlyphs();
+      updateStyleDescription();
+      const json = makeJson();
+      jsonOutput.textContent = json ?? "Enter a player username or UUID key to create the sample JSON.";
+      actionStatus.textContent = "";
+      actionStatus.className = "status";
+    }
+
+    function animate() {
+      const time = performance.now() - startedAt;
+      const animation = controls.animation.value;
+      const effect = controls.effect.value;
+      const base = rgb(controls.color.value);
+      const second = rgb(controls.color2.value);
+      const textShadow = animation === "neon glow"
+        ? `-1px 0 ${controls.color.value}, 1px 0 ${controls.color.value}, 0 -1px ${controls.color.value}, 0 1px ${controls.color.value}, 0 0 6px ${controls.color.value}`
+        : "1px 1px 0 #000";
+      const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&?";
+
+      glyphs.forEach((glyph, index) => {
+        const movement = glyphEffect(effect, time, index, glyphs.length);
+        const color = animatedColor(animation, time, index, glyphs.length, base, second);
+        glyph.style.color = cssColor(color);
+        glyph.style.opacity = String(movement.opacity);
+        glyph.style.visibility = movement.visible ? "visible" : "hidden";
+        glyph.style.transform = `translate(${movement.x}px, ${movement.y}px)`;
+        glyph.style.textShadow = textShadow;
+        glyph.style.webkitTextStroke = animation === "neon glow"
+          ? `0.35px ${controls.color.value}`
+          : "0";
+        if (effect === "scramble" && movement.scramble) {
+          const bucket = Math.floor(time / 60);
+          glyph.textContent = charset[Math.floor(randomValue(bucket, index) * charset.length)];
+        } else if (glyph.textContent !== glyph.dataset.original) {
+          glyph.textContent = glyph.dataset.original;
+        }
+      });
+      requestAnimationFrame(animate);
+    }
+
+    for (const control of Object.values(controls))
+      control.addEventListener("input", update);
+    for (const control of [controls.animation, controls.effect])
+      control.addEventListener("change", update);
+
+    byId("copy-json").addEventListener("click", async () => {
+      const json = makeJson();
+      if (!json) {
+        actionStatus.textContent = "Enter a player username or UUID key first.";
+        actionStatus.className = "status error";
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(json);
+        actionStatus.textContent = "JSON copied.";
+        actionStatus.className = "status success";
+      } catch {
+        actionStatus.textContent = "Clipboard access is unavailable here. Download the JSON or copy it from the preview box.";
+        actionStatus.className = "status error";
+      }
+    });
+
+    byId("download-json").addEventListener("click", () => {
+      const json = makeJson();
+      if (!json) {
+        actionStatus.textContent = "Enter a player username or UUID key first.";
+        actionStatus.className = "status error";
+        return;
+      }
+      const url = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "ranks.json";
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      actionStatus.textContent = "Downloaded ranks.json.";
+      actionStatus.className = "status success";
+    });
+
+    renderGlyphs();
+    update();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
