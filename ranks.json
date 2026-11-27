@@ -1,13 +1,4 @@
 {
-  "_Maksym-66fd66b7-9154-4cd5-b476-701af247e6e8": {"rank": "[BLEH]", "color": "red", "animation": "dark wave", "effect": "text wave"},
+  "_Maksym-66fd66b7-9154-4cd5-b476-701af247e6e8": {"rank": "[BLEH]", "color": "black", "animation": "bright wave", "effect": "text wave"},
   "BraindeathV1-e3c50f56-8314-4533-b51d-b1f8b2411554": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "blink"},
-  "Dewier-69e04609-da2a-4e7d-abb8-3546a971969e": {"rank": "<King>", "color": "gold", "animation": "gold rush", "effect": "none"},
-  "oVoidless-15cac775-7917-417c-8ab2-87fd2520690a": {"rank": "[Void]", "color": "blue", "animation": "pulse", "effect": "typewriter"},
-  "the_graker-80f56ee5-f785-4fe2-a5e0-2b580176d366": {"rank": "~Backflip~", "color": "#00FF00", "animation": "shimmer", "effect": "ripple"},
-  "AdamZolks-ab02c95e-c303-48f7-ba88-d433cd69218f": {"rank": "200ms", "color": "purple", "animation": "neon glow", "effect": "slide"},
-  "CoolCqt-284c10b7-28ba-4e2c-839b-3e6676375e65": {"rank": "Cat", "color": "#FFA500", "animation": "holographic", "effect": "shake"},
-  "Kryptoke-29857aad-2f4f-4846-92ca-e6504b7bd944": {"rank": "Toke", "color": "blue", "animation": "ice", "effect": "jitter"},
-  "Ereen-e6bf7219-3cad-4d81-908c-43c26e3c4b71": {"rank": "^Fire^", "color": "red", "animation": "fire", "effect": "fade"},
-  "oBots-38cc5058-2d88-404a-9c38-9fcba1dd8fbe": {"rank": ":Bot:", "color": "gray", "color2": "blue", "animation": "gradient wave", "effect": "scramble"},
-  "frogoh-725b8f0c-bb2c-4bd3-8c32-20a512f6b9af": {"rank": "-ribbit-", "color": "green", "animation": "none", "effect": "bounce"}
 }
