@@ -1,5 +1,5 @@
 {
   "_Maksym-66fd66b7-9154-4cd5-b476-701af247e6e8": {"rank": "[BLEH]", "color": "#000000", "animation": "shimmer", "effect": "scramble"},
-  "BraindeathV1-e3c50f56-8314-4533-b51d-b1f8b2411554": {"rank": "[Brainy]", "color": "purple", "animation": "bright wave", "effect": "blink"},
+  "BraindeathV1-e3c50f56-8314-4533-b51d-b1f8b2411554":{ "rank": "[WOAT++]", "color": "#9637A9", "animation": "gradient wave", "effect": "none", "color2": "#3B3B3B"},
   "ImSepp-3b536af6-0902-4341-85e3-4984bca22476": {"rank": "Monke", "color": "#503610", "color2": "#97641C", "animation": "gradient wave", "effect": "typewriter"}
 }
